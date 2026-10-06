@@ -64,26 +64,44 @@ export default {
 
     update: async (request: Request, response: Response) => {
         try {
-          const { id } = request.params;
-          const { matricula, cpf, nome, nascimento, email, telefone, endereco } = request.body;
+            const { id } = request.params;
+            const { matricula, cpf, nome, nascimento, email, telefone, endereco } = request.body;
 
-          const aluno = await prisma.aluno.update({
-            where: {
-                id: +id,
-            },
-            data: {
-                matricula,
-                cpf,
-                nome,
-                nascimento: nascimento ? new Date(nascimento) : undefined,
-                email,
-                telefone,
-                endereco,
-            },
+            const aluno = await prisma.aluno.update({
+                where: {
+                    id: +id,
+                },
+                data: {
+                    matricula,
+                    cpf,
+                    nome,
+                    nascimento: nascimento ? new Date(nascimento) : undefined,
+                    email,
+                    telefone,
+                    endereco,
+                },
 
-          });
+            });
 
-          return response.status(200).json(aluno);
+            return response.status(200).json(aluno);
+        } catch (e) {
+            return handleErrors(e, response);
+        }
+    },
+
+    delete: async (request: Request, response: Response) => {
+         try {
+            const { id } = request.params;
+            
+
+            const aluno = await prisma.aluno.delete({
+                where: {
+                    id: +id,
+                },
+
+            });
+
+            return response.status(200).json(aluno);
         } catch (e) {
             return handleErrors(e, response);
         }
